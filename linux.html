@@ -65,6 +65,7 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org15be7e5">1. centos安装emacs</a></li>
 <li><a href="#orgb3fb131">2. centos安装tmux</a></li>
+<li><a href="#orgd80934a">3. centos7安装shadowsocks</a></li>
 </ul>
 </div>
 </div>
@@ -170,6 +171,121 @@ $ cp .tmux/.tmux.conf.local .
 </pre>
 </div></li>
 </ol>
+</div>
+</div>
+
+<div id="outline-container-orgd80934a" class="outline-2">
+<h2 id="orgd80934a"><span class="section-number-2">3</span> centos7安装shadowsocks</h2>
+<div class="outline-text-2" id="text-3">
+<ol class="org-ol">
+<li><p>
+安装 pip
+pip是 python 的包管理工具。在本文中将使用 python 版本的 shadowsocks，此版本的 shadowsocks 已发布到 pip 上，因此我们需要通过 pip 命令来安装。
+</p>
+
+<p>
+在控制台执行以下命令安装 pip：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+$ python get-pip.py
+</pre>
+</div></li>
+
+<li><p>
+安装配置 shadowsocks
+在控制台执行以下命令安装 shadowsocks：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"># pip install --upgrade pip
+# pip install shadowsocks
+</pre>
+</div>
+<p>
+安装完成后，需要创建配置文件/etc/shadowsocks/shadowsocks.json，内容如下：
+</p>
+<blockquote>
+<p>
+{
+  "server": "0.0.0.0",
+  "local<sub>address</sub>": "127.0.0.1",
+  "local<sub>port</sub>": 1080,
+  "port<sub>password</sub>": {
+    "8080": "填写密码",
+    "8081": "填写密码"
+  },
+  "timeout": 600,
+  "method": "aes-256-cfb"
+}
+</p>
+</blockquote>
+<p>
+如果不配置多端口就使用如下配置
+</p>
+<blockquote>
+<p>
+{
+  "server": "0.0.0.0",
+  "server<sub>port</sub>": 8388,
+  "password": "uzon57jd0v869t7w",
+  "method": "aes-256-cfb"
+}
+</p>
+</blockquote>
+<p>
+说明：
+</p>
+<ul class="org-ul">
+<li>method为加密方法，可选aes-128-cfb, aes-192-cfb, aes-256-cfb, bf-cfb, cast5-cfb, des-cfb, rc4-md5, chacha20, salsa20, rc4, table</li>
+<li>server<sub>port为服务监听端口</sub></li>
+<li>password为密码，可使用密码生成工具生成一个随机密码</li>
+</ul>
+<p>
+以上三项信息在配置 shadowsocks 客户端时需要配置一致，具体说明可查看 shadowsocks 的帮助文档。
+</p></li>
+</ol>
+
+<p>
+3.配置自启动
+  新建启动脚本文件/etc/systemd/system/shadowsocks.service，内容如下：
+</p>
+<blockquote>
+<p>
+
+[Unit]
+Description=Shadowsocks
+</p>
+
+<p>
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/bin/ssserver -c /etc/shadowsocks/shadowsocks.json
+</p>
+
+<p>
+[Install]
+WantedBy=multi-user.target
+</p>
+</blockquote>
+<p>
+执行以下命令启动 shadowsocks 服务：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ systemctl enable shadowsocks
+$ systemctl start shadowsocks
+</pre>
+</div>
+<p>
+为了检查 shadowsocks 服务是否已成功启动，可以执行以下命令查看服务的状态：
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ systemctl status shadowsocks -l
+</pre>
+</div>
+
+<p>
+(记得防火墙里开端口)
+</p>
 </div>
 </div>
 </div>
