@@ -202,36 +202,32 @@ $ python get-pip.py
 </pre>
 </div>
 <p>
-安装完成后，需要创建配置文件/etc/shadowsocks/shadowsocks.json，内容如下：
+安装完成后，需要创建配置文件/etc/shadowsocks/shadowsocks.json，内容如下： 
 </p>
-<blockquote>
-<p>
+<pre class="example">
 {
   "server": "0.0.0.0",
-  "local<sub>address</sub>": "127.0.0.1",
-  "local<sub>port</sub>": 1080,
-  "port<sub>password</sub>": {
+  "local_address": "127.0.0.1",
+  "local_port": 1080,
+  "port_password": {
     "8080": "填写密码",
     "8081": "填写密码"
   },
   "timeout": 600,
   "method": "aes-256-cfb"
 }
-</p>
-</blockquote>
+</pre>
 <p>
 如果不配置多端口就使用如下配置
 </p>
-<blockquote>
-<p>
+<pre class="example">
 {
   "server": "0.0.0.0",
-  "server<sub>port</sub>": 8388,
+  "server_port": 8388,
   "password": "uzon57jd0v869t7w",
   "method": "aes-256-cfb"
 }
-</p>
-</blockquote>
+</pre>
 <p>
 说明：
 </p>
@@ -243,30 +239,22 @@ $ python get-pip.py
 <p>
 以上三项信息在配置 shadowsocks 客户端时需要配置一致，具体说明可查看 shadowsocks 的帮助文档。
 </p></li>
-</ol>
 
-<p>
-3.配置自启动
-  新建启动脚本文件/etc/systemd/system/shadowsocks.service，内容如下：
+<li><p>
+配置自启动
+新建启动脚本文件/etc/systemd/system/shadowsocks.service，内容如下：
 </p>
-<blockquote>
-<p>
-
+<pre class="example">
 [Unit]
 Description=Shadowsocks
-</p>
 
-<p>
 [Service]
 TimeoutStartSec=0
 ExecStart=/usr/bin/ssserver -c /etc/shadowsocks/shadowsocks.json
-</p>
 
-<p>
 [Install]
 WantedBy=multi-user.target
-</p>
-</blockquote>
+</pre>
 <p>
 执行以下命令启动 shadowsocks 服务：
 </p>
@@ -285,7 +273,8 @@ $ systemctl start shadowsocks
 
 <p>
 (记得防火墙里开端口)
-</p>
+</p></li>
+</ol>
 </div>
 </div>
 </div>
