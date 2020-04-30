@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>&lrm;</title>
+<title>Linux相关</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="ruancongyong" />
 <link rel="stylesheet" type="text/css" href="http://orgmode.org/worg/worg.css" />
@@ -58,53 +58,119 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
+<h1 class="title">Linux相关</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org89b54e7">1. 面试要点</a>
-<ul>
-<li><a href="#org6ac1dca">1.1. redis部分</a></li>
-<li><a href="#org8cfb67b">1.2. mysql部分</a></li>
-</ul>
-</li>
-<li><a href="#orgd0287cd">2. linux</a>
-<ul>
-<li><a href="#orgd3246a3">2.1. centos安装emacs</a></li>
-<li><a href="#org505b2b7">2.2. centos安装tmux</a></li>
-</ul>
-</li>
-<li><a href="#org45e58f9">3. golang</a></li>
+<li><a href="#org15be7e5">1. centos安装emacs</a></li>
+<li><a href="#orgb3fb131">2. centos安装tmux</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org89b54e7" class="outline-2">
-<h2 id="org89b54e7"><span class="section-number-2">1</span> 面试要点</h2>
+<div id="outline-container-org15be7e5" class="outline-2">
+<h2 id="org15be7e5"><span class="section-number-2">1</span> centos安装emacs</h2>
 <div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-org6ac1dca" class="outline-3">
-<h3 id="org6ac1dca"><span class="section-number-3">1.1</span> <a href="./interview.html#org6d4aa0c">redis部分</a></h3>
-</div>
-<div id="outline-container-org8cfb67b" class="outline-3">
-<h3 id="org8cfb67b"><span class="section-number-3">1.2</span> <a href="./interview.html#org0b381df">mysql部分</a></h3>
+<p>
+如果在centos里执行yum install emacs -y来安装，emacs版本比较老，一般是24.3。如果想安装更新的版本，就需要拉取源码自己编译
+</p>
+<ol class="org-ol">
+<li><p>
+首先访问 <a href="https://www.gnu.org/prep/ftp.html">GNU Emacs</a>,根据自己服务器所在位置选择最近的镜像拉取源码
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ wget https://mirrors.tuna.tsinghua.edu.cn/gnu/emacs/emacs-26.3.tar.gz
+</pre>
+</div></li>
+
+<li><p>
+解压emacs的tar.gz包
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ tar -zxf emacs-26.3.tar.gz
+$ cd emacs-26.3
+</pre>
+</div></li>
+
+<li><p>
+安装依赖包
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ sudo yum install gcc* glib* gtk* ncurses* libXpm* giflib* libjpeg* libtiff* libpng* gnutls-devel  -y
+</pre>
+</div></li>
+
+<li><p>
+开始编译安装
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ ./configure
+$ make
+$ sudo make install
+</pre>
+</div></li>
+
+<li><p>
+安装spacemacs
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+$ cd .emacs.d
+$ git checkout develop
+</pre>
+</div></li>
+</ol>
 </div>
 </div>
 
-<div id="outline-container-orgd0287cd" class="outline-2">
-<h2 id="orgd0287cd"><span class="section-number-2">2</span> linux</h2>
+
+<div id="outline-container-orgb3fb131" class="outline-2">
+<h2 id="orgb3fb131"><span class="section-number-2">2</span> centos安装tmux</h2>
 <div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-orgd3246a3" class="outline-3">
-<h3 id="orgd3246a3"><span class="section-number-3">2.1</span> <a href="./linux.html#org15be7e5">centos安装emacs</a></h3>
-</div>
-<div id="outline-container-org505b2b7" class="outline-3">
-<h3 id="org505b2b7"><span class="section-number-3">2.2</span> <a href="./linux.html#orgb3fb131">centos安装tmux</a></h3>
-</div>
-</div>
+<p>
+yum安装的tmux版本比较老，想获取更新的tmux需要拉取源码自行编译
+</p>
 
-<div id="outline-container-org45e58f9" class="outline-2">
-<h2 id="org45e58f9"><span class="section-number-2">3</span> golang</h2>
+<ol class="org-ol">
+<li><p>
+拉取源码
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ git clone https://github.com/tmux/tmux.git
+</pre>
+</div></li>
+
+<li><p>
+安装依赖包
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ sudo yum install gcc kernel-devel make ncurses-devel byacc libevent-devel
+</pre>
+</div></li>
+
+<li><p>
+编译安装
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ ./configure
+$ make
+$ sudo make install
+</pre>
+</div></li>
+
+<li><p>
+配置tmux
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ cd
+$ git clone https://github.com/gpakosz/.tmux.git
+$ ln -s -f .tmux/.tmux.conf
+$ cp .tmux/.tmux.conf.local .
+</pre>
+</div></li>
+</ol>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
