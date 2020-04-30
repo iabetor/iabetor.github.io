@@ -66,6 +66,7 @@ for the JavaScript code in this tag.
 <li><a href="#org15be7e5">1. centos安装emacs</a></li>
 <li><a href="#orgb3fb131">2. centos安装tmux</a></li>
 <li><a href="#orgd80934a">3. centos7安装shadowsocks</a></li>
+<li><a href="#orge09f5ad">4. centos部署socks5</a></li>
 </ul>
 </div>
 </div>
@@ -174,6 +175,7 @@ $ cp .tmux/.tmux.conf.local .
 </div>
 </div>
 
+
 <div id="outline-container-orgd80934a" class="outline-2">
 <h2 id="orgd80934a"><span class="section-number-2">3</span> centos7安装shadowsocks</h2>
 <div class="outline-text-2" id="text-3">
@@ -271,6 +273,135 @@ $ systemctl start shadowsocks
 </pre>
 </div>
 
+<p>
+(记得防火墙里开端口)
+</p></li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-orge09f5ad" class="outline-2">
+<h2 id="orge09f5ad"><span class="section-number-2">4</span> centos部署socks5</h2>
+<div class="outline-text-2" id="text-4">
+<ol class="org-ol">
+<li><p>
+从官网下载源码
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ wget https://nchc.dl.sourceforge.net/project/ss5/ss5/3.8.9-8/ss5-3.8.9-8.tar.gz
+</pre>
+</div></li>
+
+<li><p>
+配置编译环境及安装编译SS5依赖组件
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ yum -y install gcc automake make
+$ yum -y install pam-devel openldap-devel cyrus-sasl-devel openssl-devel
+</pre>
+</div></li>
+
+<li><p>
+解压、编译、安装
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ tar xvf ss5-3.8.9-8.tar.gz
+$ cd ss5-3.8.9-8
+$ ./configure &amp;&amp; make &amp;&amp; make install
+</pre>
+</div></li>
+
+<li><p>
+修改SS5配置文件
+修改认证方式 /etc/opt/ss5/ss5.conf，查找取消下面两行注释
+</p>
+<pre class="example">
+auth    0.0.0.0/0               -              -
+permit -        0.0.0.0/0       -       0.0.0.0/0       -       -       -       -       -
+</pre>
+<p>
+默认的是：无用户认证。
+如果想要使用 username/password 用户认证方法，需要将上面两行修改成下面这样
+</p>
+<pre class="example">
+auth    0.0.0.0/0               -              u
+permit u        0.0.0.0/0       -       0.0.0.0/0       -       -       -       -       -
+</pre>
+<p>
+添加用户名及密码 /etc/opt/ss5/ss5.passwd，每行一个用户+密码（之间用空格）
+</p>
+<pre class="example">
+test1 12345
+test2 56789
+</pre>
+<p>
+修改ss5启动的参数，自定义代理端口 /etc/sysconfig/ss5（如果不设置，默认是1080）
+此文件ss5启动时会主动加载，将
+</p>
+<pre class="example">
+#SS5_OPTS=” -u root”
+</pre>
+<p>
+取消注释，修改成下面这样
+</p>
+<pre class="example">
+SS5_OPTS=" -u root -b 0.0.0.0:10808"
+</pre>
+<p>
+给bash文件增加可执行权限 /etc/rc.d/init.d/ss5
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ chmod 755 /etc/rc.d/init.d/ss5
+</pre>
+</div></li>
+
+<li><p>
+启动ss5
+一定要在root用户目录下，执行
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ /etc/rc.d/init.d/ss5 restart
+</pre>
+</div>
+<p>
+也可以用
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ service ss5 start
+</pre>
+</div>
+<p>
+启动完成后，可以使用以下命令查看连接情况
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ netstat -an | grep 10808
+</pre>
+</div>
+<p>
+查看日志
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ more /var/log/ss5/ss5.log
+</pre>
+</div></li>
+
+<li><p>
+关闭ss5
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ /etc/rc.d/init.d/ss5 stop 也可以用 # service ss5 stop
+</pre>
+</div></li>
+
+<li><p>
+将ss5加入开机自动启动（可选）
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ chkconfig --add ss5
+$ chkconfig --level 345 ss5 on
+</pre>
+</div>
 <p>
 (记得防火墙里开端口)
 </p></li>
