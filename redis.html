@@ -74,12 +74,12 @@ for the JavaScript code in this tag.
 <h2 id="orge32a6e5"><span class="section-number-2">1</span> redis命令执行过程</h2>
 <div class="outline-text-2" id="text-1">
 <blockquote>
-<p>
-nio层读取数据
-解析数据到命令行格式
-查找命令对应的函数执行命令
-同步数据到slave和aof
-</p>
+<ul class="org-ul">
+<li>nio层读取数据</li>
+<li>解析数据到命令行格式</li>
+<li>查找命令对应的函数执行命令</li>
+<li>同步数据到slave和aof</li>
+</ul>
 </blockquote>
 </div>
 </div>
@@ -90,15 +90,45 @@ nio层读取数据
 <blockquote>
 <p>
 redis key过期的方式有三种：
+</p>
+
+<p>
 被动删除： 当读/写一个已经过期的key时,会触发惰性删除策略,直接删除这个过期key
+</p>
+
+<p>
 主动删除： 由于惰性删除策略无法保证冷数据被及时删掉,所以redis会定期主动淘汰一批已过期的key
+</p>
+
+<p>
 当前已用内存超过maxmemory限定时,触发主动清理策略
+</p>
+
+<p>
 主动清理策略主要有：
+</p>
+
+<p>
 volatile-lru：只对设置了过期时间的key进行LRU（默认值）
+</p>
+
+<p>
 allkeys-lru ： 删除lru算法的key
+</p>
+
+<p>
 volatile-random：随机删除即将过期key
+</p>
+
+<p>
 allkeys-random：随机删除
+</p>
+
+<p>
 volatile-ttl ： 删除即将过期的
+</p>
+
+<p>
 noeviction ： 永不过期
 </p>
 </blockquote>
@@ -106,7 +136,7 @@ noeviction ： 永不过期
 </div>
 </div>
 <div id="postamble" class="status">
-<!-- <p class="postamble"> Last Update 2020-05-25 Mon 12:07. Create by ruancongyong</p> -->
+<!-- <p class="postamble"> Last Update 2020-05-25 Mon 12:14. Create by ruancongyong</p> -->
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
