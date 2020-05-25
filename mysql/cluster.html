@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="ruancongyong" />
+<link rel="stylesheet" type="text/css" href="https://orgmode.org/worg/style/worg.css"/>
+<link href="favicon.ico" rel="shortcut icon">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc3d9ddf">1. 聚集索引和非聚集索引的区别</a>
+<ul>
+<li><a href="#org529b9bc">1.1. 聚集索引</a></li>
+<li><a href="#orgcf4c81e">1.2. 非聚集索引</a></li>
+<li><a href="#orgd01c596">1.3. 非聚集索引的二次查询问题</a></li>
+<li><a href="#org1149361">1.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+#TITLE: mysql面试要点
+#AUTHOR: ruancongyong
+</p>
+
+<div id="outline-container-orgc3d9ddf" class="outline-2">
+<h2 id="orgc3d9ddf"><span class="section-number-2">1</span> 聚集索引和非聚集索引的区别</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org529b9bc" class="outline-3">
+<h3 id="org529b9bc"><span class="section-number-3">1.1</span> 聚集索引</h3>
+<div class="outline-text-3" id="text-1-1">
+<blockquote>
+<p>
+索引中键值的逻辑顺序决定了表中相应行的物理顺序（索引中的数据物理存放地址和索引的顺序是一致的），可以这么理解：只要是索引是连续的，那么数据在存储介质上的存储位置也是连续的。
+</p>
+
+<p>
+聚集索引就像我们根据拼音的顺序查字典一样，可以大大的提高效率。在经常搜索一定范围的值时，通过索引找到第一条数据，根据物理地址连续存储的特点，然后检索相邻的数据，直到到达条件截至项。
+</p>
+
+<p>
+InnoDB引擎的数据文件本身就是索引文件，叶节点包含了完整的数据记录。因为InnoDB的数据文件本身要按主键聚集，所以InnoDB要求表必须有主键（MyISAM可以没有），如果没有显式指定，则MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键，如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键。
+</p>
+
+<p>
+nnoDB引擎会为每张表都加一个聚集索引，而聚集索引指向的的数据又是以物理磁盘顺序来存储的，自增的主键会把数据自动向后插入，避免了插入过程中的聚集索引排序问题。如果对聚集索引进行排序，这会带来磁盘IO性能损耗是非常大的。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgcf4c81e" class="outline-3">
+<h3 id="orgcf4c81e"><span class="section-number-3">1.2</span> 非聚集索引</h3>
+<div class="outline-text-3" id="text-1-2">
+<blockquote>
+<p>
+索引的逻辑顺序与磁盘上的物理存储顺序不同。非聚集索引的键值在逻辑上也是连续的，但是表中的数据在存储介质上的物理顺序是不一致的，即记录的逻辑顺序和实际存储的物理顺序没有任何联系。索引的记录节点有一个数据指针指向真正的数据存储位置。
+</p>
+
+<p>
+非聚集索引就像根据偏旁部首查字典一样，字典前面的目录在逻辑上也是连续的，但是查两个偏旁在目录上挨着的字时，字典中的字却很不可能是挨着的。
+</p>
+
+<p>
+MyISAM引擎使用B+Tree作为索引结构，叶节点的data域存放的是数据记录的地址，它的数据文件和索引文件是分开独立存储的，因此它的索引是非聚集索引。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgd01c596" class="outline-3">
+<h3 id="orgd01c596"><span class="section-number-3">1.3</span> 非聚集索引的二次查询问题</h3>
+<div class="outline-text-3" id="text-1-3">
+<blockquote>
+<p>
+非聚集索引叶节点仍然是索引节点，只是有一个指针指向对应的数据块，此如果使用非聚集索引查询，而查询列中包含了其他该索引没有覆盖的列，那么他还要进行第二次的查询，查询节点上对应的数据行的数据。
+</p>
+
+<p>
+解决方式：使用复合索引。
+</p>
+
+<p>
+建立两列以上的索引，即可查询复合索引里的列的数据而不需要进行回表二次查询，如index(col1, col2)，执行下面的语句：
+</p>
+</blockquote>
+<pre class="example">
+select col1, col2 from t1 where col1 = '213';
+</pre>
+<blockquote>
+<p>
+要注意使用复合索引需要满足最左侧索引的原则，也就是查询的时候如果where条件里面没有最左边的一到多列，索引就不会起作用。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org1149361" class="outline-3">
+<h3 id="org1149361"><span class="section-number-3">1.4</span> 总结</h3>
+<div class="outline-text-3" id="text-1-4">
+<blockquote>
+<p>
+聚集索引一个表只能有一个，而非聚集索引一个表可以存在多个
+</p>
+
+<p>
+聚集索引存储记录是物理上连续存在，而非聚集索引是逻辑上的连续，物理存储并不连续
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<!-- <p class="postamble"> Last Update 2020-05-25 Mon 23:12. Create by ruancongyong</p> -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165670953-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+</div>
+</body>
+</html>
