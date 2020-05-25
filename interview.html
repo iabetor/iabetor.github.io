@@ -66,6 +66,9 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org6d4aa0c">1. redis部分</a></li>
 <li><a href="#org0b381df">2. mysql部分</a></li>
+<li><a href="#org96d7645">3. golang部分</a></li>
+<li><a href="#orgf30d5e3">4. 算法部分</a></li>
+<li><a href="#orgfb98bcd">5. 网络相关部分</a></li>
 </ul>
 </div>
 </div>
@@ -75,13 +78,15 @@ for the JavaScript code in this tag.
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Redis的应用场景</li>
-<li>Redis支持的数据类型（必考）</li>
-<li>zset跳表的数据结构（必考）</li>
-<li>Redis的数据过期策略（必考）</li>
+<li>Redis支持的数据类型(必考)</li>
+<li>zset跳表的数据结构(必考)</li>
+<li>Redis哈希的数据结构</li>
+<li><a href="https://www.jianshu.com/p/35a579c43d4f">Redis的数据过期策略(必考)</a></li>
 <li>Redis的LRU过期策略的具体实现</li>
 <li>如何解决Redis缓存雪崩，缓存穿透问题</li>
 <li>Redis的持久化机制（必考）</li>
 <li>Redis的管道pipeline</li>
+<li><a href="https://www.jianshu.com/p/60cc093d6c36">Redis数据淘汰原理</a></li>
 </ul>
 </div>
 </div>
@@ -93,7 +98,7 @@ for the JavaScript code in this tag.
 <li>事务的基本要素</li>
 <li>事务隔离级别</li>
 <li>如何解决事务的并发问题(脏读，幻读)？</li>
-<li>MVCC多版本并发控制？</li>
+<li><a href="https://juejin.im/post/5d8f05b55188254a371f1a77">MVCC多版本并发控制</a>？</li>
 <li>binlog,redolog,undolog都是什么，起什么作用？</li>
 <li>InnoDB的行锁/表锁？</li>
 <li>myisam和innodb的区别，什么时候选择myisam？</li>
@@ -103,12 +108,44 @@ for the JavaScript code in this tag.
 <li>sql如何优化?</li>
 <li>explain是如何解析sql的？</li>
 <li>order by原理</li>
+<li>聚集索引和非聚集索引的区别</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org96d7645" class="outline-2">
+<h2 id="org96d7645"><span class="section-number-2">3</span> golang部分</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>gc过程</li>
+<li>slice底层原理</li>
+<li>逃逸分析</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf30d5e3" class="outline-2">
+<h2 id="orgf30d5e3"><span class="section-number-2">4</span> 算法部分</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>判断平衡二叉树</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgfb98bcd" class="outline-2">
+<h2 id="orgfb98bcd"><span class="section-number-2">5</span> 网络相关部分</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>http和https区别</li>
+<li>tcp如何保证可靠性</li>
+<li>tcp三次握手和四次挥手</li>
 </ul>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<!-- <p class="postamble"> Last Update 2020-05-06 三 14:47. Create by ruancongyong</p> -->
+<!-- <p class="postamble"> Last Update 2020-05-25 一 09:25. Create by ruancongyong</p> -->
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
