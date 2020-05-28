@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="ruancongyong" />
+<link rel="stylesheet" type="text/css" href="https://orgmode.org/worg/style/worg.css"/>
+<link href="favicon.ico" rel="shortcut icon">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2088335">1. 协程和线程区别</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2088335" class="outline-2">
+<h2 id="org2088335"><span class="section-number-2">1</span> 协程和线程区别</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<ul class="org-ul">
+<li>协程与线程主要区别是它将不再被内核调度，而是交给了程序自己而线程是将自己交给内核调度</li>
+<li>协程对资源使用非常低，主要体现在内存和切换(调度)开销方面，每个goroutine (协程) 默认占用内存远比 Java 、C 的线程少，只有2KB，而线程则需要8MB；线程切换涉及模式切换(从用户态切换到内核态)、16个寄存器、PC、SP&#x2026;等寄存器的刷新等；而goroutine 只有三个寄存器的值修改 - PC / SP / DX</li>
+</ul>
+
+<p>
+详情可参考这篇文章 <a href="https://zhuanlan.zhihu.com/p/27245377">进程、线程、协程与goruntine</a>
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<!-- <p class="postamble"> Last Update 2020-05-28 Thu 22:47. Create by ruancongyong</p> -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165670953-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+</div>
+</body>
+</html>
